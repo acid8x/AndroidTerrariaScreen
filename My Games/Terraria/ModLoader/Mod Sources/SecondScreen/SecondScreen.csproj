@@ -66,7 +66,7 @@
     <Reference Include="System.Net" />
     <Reference Include="System.Web" />
     <Reference Include="Terraria">
-      <HintPath>D:\SteamLibrary\steamapps\common\Terraria\Terraria.exe</HintPath>
+      <HintPath>C:\Program Files (x86)\Steam\steamapps\common\Terraria\Terraria.exe</HintPath>
     </Reference>
     <Reference Include="WebSocket4Net, Version=0.14.1.0, Culture=neutral, PublicKeyToken=eb4e154b696bf72a, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -75,6 +75,6 @@
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
-    <PostBuildEvent>"D:\SteamLibrary\steamapps\common\Terraria\Terraria.exe" -build "$(ProjectDir)\" -eac "$(TargetPath)"</PostBuildEvent>
+    <PostBuildEvent>"C:\Program Files (x86)\Steam\steamapps\common\Terraria\Terraria.exe" -build "$(ProjectDir)\" -eac "$(TargetPath)"</PostBuildEvent>
   </PropertyGroup>
 </Project>

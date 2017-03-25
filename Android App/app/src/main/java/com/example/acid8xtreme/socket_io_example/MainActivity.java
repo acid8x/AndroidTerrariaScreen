@@ -20,12 +20,13 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
     public TextView[] slots;
     public ProgressBar hp = null, mp = null;
     public TextView tvHp = null, tvMp = null;
-    public int hhp = 0, mmp = 0;
     private MainFragment mainFragment = null;
     private boolean landscape;
-    private int activityInfo, width, selected = -1;
+    private int width, selected = -1;
+    public static int listeningID = -1, activityInfo = ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED;
     public double len = -1;
     public long timer = 0;
+    public static int[] connectedIds;
 
     private final Handler mHandler = new Handler() {
         @Override
@@ -51,7 +52,8 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
                         slots[id].setBackground(ob);
                         slots[id].setText(stack);
                         if (stack.equals("0")) slots[id].setTextColor(Color.BLACK);
-                        else if (slots[id].getCurrentTextColor() != Color.RED) slots[id].setTextColor(Color.RED);
+                        else if (slots[id].getCurrentTextColor() != Color.RED)
+                            slots[id].setTextColor(Color.RED);
                     }
                     break;
                 case Constants.MESSAGE_STACK_ONLY:
@@ -64,28 +66,31 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
                             else if (state == 0) id = (id * 10) + (array[i] - 48);
                             else stack += array[i];
                             if (stack.equals("0")) slots[id].setTextColor(Color.BLACK);
-                            else if (slots[id].getCurrentTextColor() != Color.RED) slots[id].setTextColor(Color.RED);
+                            else if (slots[id].getCurrentTextColor() != Color.RED)
+                                slots[id].setTextColor(Color.RED);
                         }
                         slots[id].setText(stack);
                     }
                     break;
                 case Constants.MESSAGE_PLAYER_INFO:
-                    runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            int hhp = 0, mmp = 0;
-                            int[] val = msg.getData().getIntArray("PLAYERINFO");
-                            if (val != null) {
-                                hhp = (val[0]*100) / val[1];
-                                mmp = (val[2]*100) / val[3];
-
+                    final int[] val = msg.getData().getIntArray("PLAYERINFO");
+                    if (val != null) {
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                int hhp = (val[0] * 100) / val[1];
+                                int mmp = (val[2] * 100) / val[3];
                                 tvHp.setText("" + val[0] + " / " + val[1]);
                                 tvMp.setText("" + val[2] + " / " + val[3]);
+                                hp.setProgress(hhp);
+                                mp.setProgress(mmp);
                             }
-                            hp.setProgress(hhp);
-                            mp.setProgress(mmp);
-                        }
-                    });
+                        });
+                    }
+                    break;
+                case Constants.MESSAGE_PLAYER_LIST:
+                    final int[] values = msg.getData().getIntArray("PLAYERLIST");
+                    if (values != null) connectedIds = values;
                     break;
             }
         }

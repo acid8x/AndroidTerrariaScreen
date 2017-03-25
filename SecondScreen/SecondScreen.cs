@@ -133,7 +133,7 @@ namespace SecondScreen
             }
             if (now() - timer > 500)
             {
-                socket.Emit("playerInfo", "" + Main.myPlayer + Main.LocalPlayer.statLife + "," + Main.LocalPlayer.statLifeMax + "," + Main.LocalPlayer.statMana + "," + Main.LocalPlayer.statManaMax);
+                socket.Emit("playerInfo", "" + Main.LocalPlayer.statLife + "," + Main.LocalPlayer.statLifeMax + "," + Main.LocalPlayer.statMana + "," + Main.LocalPlayer.statManaMax);
                 for (int i = 0; i < 50; i++)
                 {
                     if (Main.LocalPlayer.inventory[i].netID != inventory[i].id)
@@ -141,13 +141,11 @@ namespace SecondScreen
                         inventory[i].id = Main.LocalPlayer.inventory[i].netID;
                         inventory[i].stack = Main.LocalPlayer.inventory[i].stack;
                         inventory[i].base64 = getBase64String(Main.LocalPlayer.inventory[i]);
-                        String ss = "" + i + "," + inventory[i].stack + "," + inventory[i].base64;
-                        socket.Emit("completeItem", ss);
+                        socket.Emit("completeItem", "" + i + "," + inventory[i].stack + "," + inventory[i].base64);
                     } else if (Main.LocalPlayer.inventory[i].stack != inventory[i].stack)
                     {
                         inventory[i].stack = Main.LocalPlayer.inventory[i].stack;
-                        String ss = "" + i + "," + inventory[i].stack;
-                        socket.Emit("stackOnly", ss);
+                        socket.Emit("stackOnly", "" + i + "," + inventory[i].stack);
                     }
                 }
                 timer = now();

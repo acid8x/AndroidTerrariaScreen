@@ -1,28 +1,32 @@
 package com.example.acid8xtreme.socket_io_example;
 
+import android.content.Context;
 import android.content.pm.ActivityInfo;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
+import android.graphics.Point;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.support.v4.app.FragmentActivity;
 import android.util.Base64;
+import android.view.Display;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import static java.lang.System.in;
+
 public class MainActivity extends FragmentActivity implements View.OnClickListener {
 
     public TextView[] slots;
-    public ProgressBar pbHp = null, pbMp = null;
     public TextView tvHp = null, tvMp = null;
     private MainFragment mainFragment = null;
     private boolean landscape;
-    private int width, selected = -1;
+    private int height, width, selected = -1;
     public static int listeningID = -1, activityInfo = ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED;
     public double len = -1;
     public long timer = 0;
@@ -100,11 +104,12 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
                                 }
                             }
                         }
-                        String[] texts = {""+hp+" / "+maxHp,""+mp+" / "+maxMp};
-                        tvHp.setText(texts[0]);
-                        tvMp.setText(texts[1]);
-                        pbHp.setProgress(((hp*100)/maxHp));
-                        pbMp.setProgress(((mp*100)/maxMp));
+                        int hp_percent = (hp*100)/maxHp;
+                        int mp_percent = (mp*100)/maxMp;
+                        tvHp.setWidth(hp_percent*(width/200));
+                        tvHp.setText(""+hp_percent+ " %");
+                        tvMp.setWidth(mp_percent*(width/200));
+                        tvMp.setText(""+mp_percent+ " %");
                     }
                     break;
                 case Constants.MESSAGE_PLAYER_LIST:
@@ -128,6 +133,11 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
             if (rotation < 2) activityInfo = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT;
             if (rotation > 1) activityInfo = ActivityInfo.SCREEN_ORIENTATION_REVERSE_PORTRAIT;
         }
+        Display display = getWindowManager().getDefaultDisplay();
+        Point size = new Point();
+        display.getSize(size);
+        width = size.x;
+        height = size.y;
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         loadTextViewArray();
@@ -229,8 +239,6 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
         slots[47] = (TextView) findViewById(R.id.tv47);
         slots[48] = (TextView) findViewById(R.id.tv48);
         slots[49] = (TextView) findViewById(R.id.tv49);
-        pbHp = (ProgressBar) findViewById(R.id.hp);
-        pbMp = (ProgressBar) findViewById(R.id.mp);
         tvHp = (TextView) findViewById(R.id.tvHp);
         tvMp = (TextView) findViewById(R.id.tvMp);
         for (int i = 0; i < 50; i++) slots[i].setOnClickListener(this);

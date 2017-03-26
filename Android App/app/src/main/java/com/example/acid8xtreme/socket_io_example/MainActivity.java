@@ -18,7 +18,7 @@ import android.widget.TextView;
 public class MainActivity extends FragmentActivity implements View.OnClickListener {
 
     public TextView[] slots;
-    public ProgressBar hp = null, mp = null;
+    public ProgressBar pbHp = null, pbMp = null;
     public TextView tvHp = null, tvMp = null;
     private MainFragment mainFragment = null;
     private boolean landscape;
@@ -73,19 +73,38 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
                     }
                     break;
                 case Constants.MESSAGE_PLAYER_INFO:
-                    final int[] val = msg.getData().getIntArray("PLAYERINFO");
-                    if (val != null) {
-                        runOnUiThread(new Runnable() {
-                            @Override
-                            public void run() {
-                                int hhp = (val[0] * 100) / val[1];
-                                int mmp = (val[2] * 100) / val[3];
-                                tvHp.setText("" + val[0] + " / " + val[1]);
-                                tvMp.setText("" + val[2] + " / " + val[3]);
-                                hp.setProgress(hhp);
-                                mp.setProgress(mmp);
+                    if (message != null) {
+                        char[] array = message.toCharArray();
+                        int hp = 0, mp = 0, maxHp = 0, maxMp = 0;
+                        for (int i = 0; i < message.length(); i++) {
+                            if (array[i] == ',') state++;
+                            else if (array[i] > 47 && array[i] < 58) {
+                                int val = array[i] - 48;
+                                switch (state) {
+                                    case 0:
+                                        hp *= 10;
+                                        hp += val;
+                                        break;
+                                    case 1:
+                                        maxHp *= 10;
+                                        maxHp += val;
+                                        break;
+                                    case 2:
+                                        mp *= 10;
+                                        mp += val;
+                                        break;
+                                    case 3:
+                                        maxMp *= 10;
+                                        maxMp += val;
+                                        break;
+                                }
                             }
-                        });
+                        }
+                        String[] texts = {""+hp+" / "+maxHp,""+mp+" / "+maxMp};
+                        tvHp.setText(texts[0]);
+                        tvMp.setText(texts[1]);
+                        pbHp.setProgress(((hp*100)/maxHp));
+                        pbMp.setProgress(((mp*100)/maxMp));
                     }
                     break;
                 case Constants.MESSAGE_PLAYER_LIST:
@@ -210,11 +229,10 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
         slots[47] = (TextView) findViewById(R.id.tv47);
         slots[48] = (TextView) findViewById(R.id.tv48);
         slots[49] = (TextView) findViewById(R.id.tv49);
-        hp = (ProgressBar) findViewById(R.id.hp);
-        mp = (ProgressBar) findViewById(R.id.mp);
+        pbHp = (ProgressBar) findViewById(R.id.hp);
+        pbMp = (ProgressBar) findViewById(R.id.mp);
         tvHp = (TextView) findViewById(R.id.tvHp);
         tvMp = (TextView) findViewById(R.id.tvMp);
-
         for (int i = 0; i < 50; i++) slots[i].setOnClickListener(this);
     }
 }

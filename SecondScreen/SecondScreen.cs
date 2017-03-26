@@ -45,6 +45,7 @@ namespace SecondScreen
         public static Socket socket = null;
         public long timer;
         public Inventory[] inventory = new Inventory[50];
+        public String lastSend = "";
 
         public SecondScreen()
         {
@@ -69,6 +70,8 @@ namespace SecondScreen
                 socket.On("renew", (data) =>
                 {
                     for (int i = 0; i < 50; i++) inventory[i].set(0, 0, "");
+                    lastSend = "";
+                    timer += 300;
                 });
                 socket.On("move", (data) =>
                 {
@@ -131,9 +134,14 @@ namespace SecondScreen
                     }
                 });
             }
-            if (now() - timer > 500)
+            if (now() - timer > 300)
             {
-                socket.Emit("playerInfo", "" + Main.LocalPlayer.statLife + "," + Main.LocalPlayer.statLifeMax + "," + Main.LocalPlayer.statMana + "," + Main.LocalPlayer.statManaMax);
+                String send = "" + Main.LocalPlayer.statLife + "," + Main.LocalPlayer.statLifeMax + "," + Main.LocalPlayer.statMana + "," + Main.LocalPlayer.statManaMax + ",";
+                if (send != lastSend)
+                {
+                    lastSend = send;
+                    socket.Emit("playerInfo", send);
+                }
                 for (int i = 0; i < 50; i++)
                 {
                     if (Main.LocalPlayer.inventory[i].netID != inventory[i].id)

@@ -11,3 +11,20 @@ C:\Users\ACiD8 Xtreme\Documents\My Games\Terraria\ModLoader\Mod Sources\SecondSc
 C:\Users\ACiD8 Xtreme\Documents\My Games\Terraria\ModLoader\Mod Sources\SecondScreen\obj\Debug\SecondScreen.csprojResolveAssemblyReference.cache
 C:\Users\ACiD8 Xtreme\Documents\My Games\Terraria\ModLoader\Mod Sources\SecondScreen\obj\Debug\SecondScreen.dll
 C:\Users\ACiD8 Xtreme\Documents\My Games\Terraria\ModLoader\Mod Sources\SecondScreen\obj\Debug\SecondScreen.pdb
+C:\Users\Marco\Documents\My Games\Terraria\ModLoader\Mod Sources\SecondScreen\bin\Debug\SecondScreen.dll
+C:\Users\Marco\Documents\My Games\Terraria\ModLoader\Mod Sources\SecondScreen\bin\Debug\SecondScreen.pdb
+C:\Users\Marco\Documents\My Games\Terraria\ModLoader\Mod Sources\SecondScreen\bin\Debug\EngineIoClientDotNet.dll
+C:\Users\Marco\Documents\My Games\Terraria\ModLoader\Mod Sources\SecondScreen\bin\Debug\Microsoft.Xna.Framework.dll
+C:\Users\Marco\Documents\My Games\Terraria\ModLoader\Mod Sources\SecondScreen\bin\Debug\Microsoft.Xna.Framework.Game.dll
+C:\Users\Marco\Documents\My Games\Terraria\ModLoader\Mod Sources\SecondScreen\bin\Debug\Microsoft.Xna.Framework.Graphics.dll
+C:\Users\Marco\Documents\My Games\Terraria\ModLoader\Mod Sources\SecondScreen\bin\Debug\Microsoft.Xna.Framework.Xact.dll
+C:\Users\Marco\Documents\My Games\Terraria\ModLoader\Mod Sources\SecondScreen\bin\Debug\SocketIoClientDotNet.dll
+C:\Users\Marco\Documents\My Games\Terraria\ModLoader\Mod Sources\SecondScreen\bin\Debug\WebSocket4Net.dll
+C:\Users\Marco\Documents\My Games\Terraria\ModLoader\Mod Sources\SecondScreen\bin\Debug\Microsoft.Xna.Framework.GamerServices.dll
+C:\Users\Marco\Documents\My Games\Terraria\ModLoader\Mod Sources\SecondScreen\bin\Debug\Microsoft.Xna.Framework.Input.Touch.dll
+C:\Users\Marco\Documents\My Games\Terraria\ModLoader\Mod Sources\SecondScreen\bin\Debug\Microsoft.Xna.Framework.GamerServices.xml
+C:\Users\Marco\Documents\My Games\Terraria\ModLoader\Mod Sources\SecondScreen\bin\Debug\Microsoft.Xna.Framework.Input.Touch.xml
+C:\Users\Marco\Documents\My Games\Terraria\ModLoader\Mod Sources\SecondScreen\obj\Debug\SecondScreen.csprojResolveAssemblyReference.cache
+C:\Users\Marco\Documents\My Games\Terraria\ModLoader\Mod Sources\SecondScreen\obj\Debug\SecondScreen.dll
+C:\Users\Marco\Documents\My Games\Terraria\ModLoader\Mod Sources\SecondScreen\obj\Debug\SecondScreen.pdb
+C:\Users\Marco\Documents\My Games\Terraria\ModLoader\Mod Sources\SecondScreen\bin\Debug\Terraria.exe

@@ -2,6 +2,7 @@ package com.example.acid8xtreme.socket_io_example;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
@@ -26,8 +27,9 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
     public TextView[] slots;
     public TextView tvHp = null, tvMp = null;
     private MainFragment mainFragment = null;
-    private int width, selected = -1;
-    public static int listeningID = -1;
+    private int height, width, selected = -1;
+    public static int listeningID = -1, activityInfo;
+    public static boolean landscape;
     public long timer = 0;
     public static String SOCKET_IO_SERVER = "";
 
@@ -139,10 +141,23 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        int orientation = getResources().getConfiguration().orientation;
+        int rotation = getWindowManager().getDefaultDisplay().getRotation();
+        if (orientation == 2) {
+            landscape = true;
+            if (rotation < 2) activityInfo = ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE;
+            if (rotation > 1) activityInfo = ActivityInfo.SCREEN_ORIENTATION_REVERSE_LANDSCAPE;
+        } else if (orientation == 1) {
+            landscape = false;
+            if (rotation < 2) activityInfo = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT;
+            if (rotation > 1) activityInfo = ActivityInfo.SCREEN_ORIENTATION_REVERSE_PORTRAIT;
+        }
+        setRequestedOrientation(activityInfo);
         Display display = getWindowManager().getDefaultDisplay();
         Point size = new Point();
         display.getSize(size);
         width = size.x;
+        height = size.y;
         super.onCreate(savedInstanceState);
         if (savedInstanceState == null) {
             mainFragment = MainFragment.newInstance(mHandler);

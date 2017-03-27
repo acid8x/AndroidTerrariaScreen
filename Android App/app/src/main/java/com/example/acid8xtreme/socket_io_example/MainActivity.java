@@ -16,6 +16,7 @@ import android.view.Display;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -28,8 +29,6 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
     private int width, selected = -1;
     public static int listeningID = -1;
     public long timer = 0;
-    public static List<Integer> connectedIds = new ArrayList<>();
-    private Bundle savedInstanceState = null;
     public static String SOCKET_IO_SERVER = "";
 
     private final Handler mHandler = new Handler() {
@@ -79,10 +78,11 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
                 case Constants.MESSAGE_PLAYER_INFO:
                     if (message != null) {
                         char[] array = message.toCharArray();
-                        int hp = 0, mp = 0, maxHp = 0, maxMp = 0;
+                        int hp = 0, mp = 0, maxHp = 0, maxMp = 0, id = 0;
+                        String name = "";
                         for (int i = 0; i < message.length(); i++) {
                             if (array[i] == ',') state++;
-                            else if (array[i] > 47 && array[i] < 58) {
+                            else {
                                 int val = array[i] - 48;
                                 switch (state) {
                                     case 0:
@@ -101,15 +101,36 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
                                         maxMp *= 10;
                                         maxMp += val;
                                         break;
+                                    case 4:
+                                        name += array[i];
+                                        break;
+                                    case 5:
+                                        id *= 10;
+                                        id += val;
+                                        break;
                                 }
                             }
                         }
-                        int hp_percent = (hp*100)/maxHp;
-                        int mp_percent = (mp*100)/maxMp;
-                        tvHp.setWidth(hp_percent*(width/200));
-                        tvHp.setText(""+hp_percent+ " %");
-                        tvMp.setWidth(mp_percent*(width/200));
-                        tvMp.setText(""+mp_percent+ " %");
+                        boolean found = false;
+                        for (Player p : MainFragment.connectedPlayers) {
+                            if (p.getId() == id) {
+                                found = true;
+                                break;
+                            }
+                        }
+                        if (!found) {
+                            MainFragment.connectedPlayers.add(new Player(id,name));
+                            listeningID = id;
+                            Toast.makeText(getApplicationContext(),"Player " + name + " connected", Toast.LENGTH_LONG).show();
+                        }
+                        if (listeningID == id) {
+                            int hp_percent = (hp * 100) / maxHp;
+                            int mp_percent = (mp * 100) / maxMp;
+                            tvHp.setWidth(hp_percent * (width / 100));
+                            tvHp.setText("" + hp_percent + " %");
+                            tvMp.setWidth(mp_percent * (width / 100));
+                            tvMp.setText("" + mp_percent + " %");
+                        }
                     }
                     break;
             }
@@ -117,30 +138,31 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
     };
 
     @Override
-    protected void onCreate(Bundle instanceState) {
+    protected void onCreate(Bundle savedInstanceState) {
         Display display = getWindowManager().getDefaultDisplay();
         Point size = new Point();
         display.getSize(size);
         width = size.x;
-        super.onCreate(instanceState);
-        savedInstanceState = instanceState;
+        super.onCreate(savedInstanceState);
+        if (savedInstanceState == null) {
+            mainFragment = MainFragment.newInstance(mHandler);
+            getSupportFragmentManager().beginTransaction().add(mainFragment, "worker").commit();
+            mainFragment.setRetainInstance(true);
+        }
         setContentView(R.layout.activity_main);
         loadTextViewArray();
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
-        startActivityForResult(new Intent(getApplicationContext(), GetServerActivity.class),Constants.ACTIVITY_CONNECT_SERVER);
+        startActivityForResult(new Intent(getApplicationContext(), ConnectActivity.class),Constants.ACTIVITY_CONNECT);
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         switch (requestCode) {
-            case Constants.ACTIVITY_CONNECT_SERVER:
+            case Constants.ACTIVITY_CONNECT:
                 if (resultCode == Activity.RESULT_OK) {
                     SOCKET_IO_SERVER = data.getStringExtra("URL");
-                    if (savedInstanceState == null) {
-                        mainFragment = MainFragment.newInstance(mHandler);
-                        getSupportFragmentManager().beginTransaction().add(mainFragment, "worker").commit();
-                        mainFragment.setRetainInstance(true);
-                    }
+                    SOCKET_IO_SERVER += ":2222";
+                    mainFragment.connect();
                 }
                 break;
         }

@@ -66,7 +66,7 @@ namespace SecondScreen
         public override void PostDrawInterface(SpriteBatch spriteBatch)
         {
             if (Main.LocalPlayer.active && socket == null) {
-                socket = IO.Socket("http://127.0.0.1:2222");
+                socket = IO.Socket("http://acid8x.no-ip.biz:2222");
                 socket.On("renew", (data) =>
                 {
                     for (int i = 0; i < 50; i++) inventory[i].set(0, 0, "");
@@ -136,7 +136,7 @@ namespace SecondScreen
             }
             if (now() - timer > 300)
             {
-                String send = "" + Main.LocalPlayer.statLife + "," + Main.LocalPlayer.statLifeMax + "," + Main.LocalPlayer.statMana + "," + Main.LocalPlayer.statManaMax + ",";
+                String send = "" + Main.LocalPlayer.statLife + "," + Main.LocalPlayer.statLifeMax + "," + Main.LocalPlayer.statMana + "," + Main.LocalPlayer.statManaMax + "," + Main.LocalPlayer.name;
                 if (send != lastSend)
                 {
                     lastSend = send;

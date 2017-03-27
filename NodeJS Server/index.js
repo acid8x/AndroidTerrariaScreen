@@ -19,10 +19,6 @@ io.on('connection', function(socket) {
 	console.log(socket.Ident + " connected");
 	socket.broadcast.emit('renew');
 	
-	socket.on('connected', function() {
-		socket.broadcast.emit('connected', arr);
-	});
-	
 	socket.on('move', function(data) {
 		socket.broadcast.emit('move', data);
 	});	
@@ -40,6 +36,7 @@ io.on('connection', function(socket) {
 	});
 	
 	socket.on('disconnect', function() {
+		socket.broadcast.emit('disconnected', socket.Ident);
 		console.log(socket.Ident + " disconnected");
 	});
 });

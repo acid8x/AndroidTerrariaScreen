@@ -1,7 +1,7 @@
 package com.example.acid8xtreme.socket_io_example;
 
-import android.content.Context;
-import android.content.pm.ActivityInfo;
+import android.app.Activity;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
@@ -15,22 +15,22 @@ import android.util.Base64;
 import android.view.Display;
 import android.view.View;
 import android.view.WindowManager;
-import android.widget.ProgressBar;
 import android.widget.TextView;
 
-import static java.lang.System.in;
+import java.util.ArrayList;
+import java.util.List;
 
 public class MainActivity extends FragmentActivity implements View.OnClickListener {
 
     public TextView[] slots;
     public TextView tvHp = null, tvMp = null;
     private MainFragment mainFragment = null;
-    private boolean landscape;
-    private int height, width, selected = -1;
-    public static int listeningID = -1, activityInfo = ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED;
-    public double len = -1;
+    private int width, selected = -1;
+    public static int listeningID = -1;
     public long timer = 0;
-    public static int[] connectedIds;
+    public static List<Integer> connectedIds = new ArrayList<>();
+    private Bundle savedInstanceState = null;
+    public static String SOCKET_IO_SERVER = "";
 
     private final Handler mHandler = new Handler() {
         @Override
@@ -112,40 +112,37 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
                         tvMp.setText(""+mp_percent+ " %");
                     }
                     break;
-                case Constants.MESSAGE_PLAYER_LIST:
-                    final int[] values = msg.getData().getIntArray("PLAYERLIST");
-                    if (values != null) connectedIds = values;
-                    break;
             }
         }
     };
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        int orientation = getResources().getConfiguration().orientation;
-        int rotation = getWindowManager().getDefaultDisplay().getRotation();
-        if (orientation == 2) {
-            landscape = true;
-            if (rotation < 2) activityInfo = ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE;
-            if (rotation > 1) activityInfo = ActivityInfo.SCREEN_ORIENTATION_REVERSE_LANDSCAPE;
-        } else if (orientation == 1) {
-            landscape = false;
-            if (rotation < 2) activityInfo = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT;
-            if (rotation > 1) activityInfo = ActivityInfo.SCREEN_ORIENTATION_REVERSE_PORTRAIT;
-        }
+    protected void onCreate(Bundle instanceState) {
         Display display = getWindowManager().getDefaultDisplay();
         Point size = new Point();
         display.getSize(size);
         width = size.x;
-        height = size.y;
-        super.onCreate(savedInstanceState);
+        super.onCreate(instanceState);
+        savedInstanceState = instanceState;
         setContentView(R.layout.activity_main);
         loadTextViewArray();
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
-        if (savedInstanceState == null) {
-            mainFragment = MainFragment.newInstance(mHandler);
-            getSupportFragmentManager().beginTransaction().add(mainFragment, "worker").commit();
-            mainFragment.setRetainInstance(true);
+        startActivityForResult(new Intent(getApplicationContext(), GetServerActivity.class),Constants.ACTIVITY_CONNECT_SERVER);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        switch (requestCode) {
+            case Constants.ACTIVITY_CONNECT_SERVER:
+                if (resultCode == Activity.RESULT_OK) {
+                    SOCKET_IO_SERVER = data.getStringExtra("URL");
+                    if (savedInstanceState == null) {
+                        mainFragment = MainFragment.newInstance(mHandler);
+                        getSupportFragmentManager().beginTransaction().add(mainFragment, "worker").commit();
+                        mainFragment.setRetainInstance(true);
+                    }
+                }
+                break;
         }
     }
 

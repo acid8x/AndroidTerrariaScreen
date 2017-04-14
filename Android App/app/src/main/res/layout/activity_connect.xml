@@ -1,32 +1,36 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:gravity="center_horizontal"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:layout_margin="20dp">
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:gravity="center_horizontal"
+              android:orientation="vertical">
 
     <TextView
         android:id="@+id/tvIp"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:layout_marginBottom="20dp"
+        android:layout_height="0dp"
+        android:layout_margin="20dp"
+        android:layout_weight="1"
         android:gravity="center_horizontal"
+        android:lines="1"
+        android:maxLines="1"
+        android:minLines="1"
         android:textSize="36sp"/>
 
     <LinearLayout
         android:id="@+id/l1"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/tvIp"
-        android:layout_centerHorizontal="true"
+        android:layout_height="0dp"
+        android:layout_marginEnd="20dp"
+        android:layout_marginStart="20dp"
+        android:layout_weight="1"
         android:gravity="center_horizontal"
         android:orientation="horizontal">
 
         <Button
             android:id="@+id/button1"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
             android:layout_margin="5dp"
             android:layout_weight="1"
             android:text="@string/_1"
@@ -34,8 +38,8 @@
 
         <Button
             android:id="@+id/button2"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
             android:layout_margin="5dp"
             android:layout_weight="1"
             android:text="@string/_2"
@@ -43,27 +47,17 @@
 
         <Button
             android:id="@+id/button3"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
             android:layout_margin="5dp"
             android:layout_weight="1"
             android:text="@string/_3"
             android:textSize="36sp"/>
-    </LinearLayout>
-
-    <LinearLayout
-        android:id="@+id/l2"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/l1"
-        android:layout_centerHorizontal="true"
-        android:gravity="center_horizontal"
-        android:orientation="horizontal">
 
         <Button
             android:id="@+id/button4"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
             android:layout_margin="5dp"
             android:layout_weight="1"
             android:text="@string/_4"
@@ -71,8 +65,8 @@
 
         <Button
             android:id="@+id/button5"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
             android:layout_margin="5dp"
             android:layout_weight="1"
             android:text="@string/_5"
@@ -80,8 +74,8 @@
 
         <Button
             android:id="@+id/button6"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
             android:layout_margin="5dp"
             android:layout_weight="1"
             android:text="@string/_6"
@@ -89,17 +83,19 @@
     </LinearLayout>
 
     <LinearLayout
-        android:id="@+id/l3"
+        android:id="@+id/l2"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/l2"
+        android:layout_height="0dp"
+        android:layout_marginEnd="20dp"
+        android:layout_marginStart="20dp"
+        android:layout_weight="1"
         android:gravity="center_horizontal"
         android:orientation="horizontal">
 
         <Button
             android:id="@+id/button7"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
             android:layout_margin="5dp"
             android:layout_weight="1"
             android:text="@string/_7"
@@ -107,8 +103,8 @@
 
         <Button
             android:id="@+id/button8"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
             android:layout_margin="5dp"
             android:layout_weight="1"
             android:text="@string/_8"
@@ -116,45 +112,35 @@
 
         <Button
             android:id="@+id/button9"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
             android:layout_margin="5dp"
             android:layout_weight="1"
             android:text="@string/_9"
             android:textSize="36sp"/>
-    </LinearLayout>
-
-    <LinearLayout
-        android:id="@+id/l4"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/l3"
-        android:layout_centerHorizontal="true"
-        android:gravity="center_horizontal"
-        android:orientation="horizontal">
-
-        <Button
-            android:id="@+id/buttonD"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_margin="5dp"
-            android:layout_weight="1"
-            android:text="@string/dot"
-            android:textSize="36sp"/>
 
         <Button
             android:id="@+id/button0"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
             android:layout_margin="5dp"
             android:layout_weight="1"
             android:text="@string/_0"
             android:textSize="36sp"/>
 
         <Button
+            android:id="@+id/buttonD"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_margin="5dp"
+            android:layout_weight="1"
+            android:text="@string/dot"
+            android:textSize="36sp"/>
+
+        <Button
             android:id="@+id/buttonB"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
             android:layout_margin="5dp"
             android:layout_weight="1"
             android:text="@string/backspace"
@@ -164,11 +150,12 @@
     <Button
         android:id="@+id/buttonC"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/l4"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="20dp"
+        android:layout_height="0dp"
+        android:layout_margin="20dp"
+        android:layout_weight="1"
+        android:paddingEnd="50dp"
+        android:paddingStart="50dp"
         android:text="Connect"
         android:textSize="36sp"/>
 
-</RelativeLayout>
+</LinearLayout>

@@ -2,7 +2,6 @@ package com.example.acid8xtreme.socket_io_example;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.content.pm.ActivityInfo;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
@@ -15,21 +14,22 @@ import android.support.v4.app.FragmentActivity;
 import android.util.Base64;
 import android.view.Display;
 import android.view.View;
-import android.view.WindowManager;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import java.util.ArrayList;
-import java.util.List;
+import com.github.florent37.viewanimator.ViewAnimator;
+import com.special.ResideMenu.ResideMenu;
+import com.special.ResideMenu.ResideMenuItem;
 
 public class MainActivity extends FragmentActivity implements View.OnClickListener {
 
     public TextView[] slots;
+    public LinearLayout[] lines;
     public TextView tvHp = null, tvMp = null;
     private MainFragment mainFragment = null;
     private int height, width, selected = -1;
-    public static int listeningID = -1, activityInfo;
-    public static boolean landscape;
+    public static int listeningID = -1;
     public long timer = 0;
     public static String SOCKET_IO_SERVER = "";
 
@@ -132,6 +132,7 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
                             tvHp.setText("" + hp_percent + " %");
                             tvMp.setWidth(mp_percent * (width / 100));
                             tvMp.setText("" + mp_percent + " %");
+                            if (hp_percent < 1) ViewAnimator.animate((LinearLayout) findViewById(R.id.main)).alpha(1f,0f).duration(1000).thenAnimate((TextView) findViewById(R.id.fuck)).alpha(0f,1f,0f).decelerate().duration(5000).thenAnimate((LinearLayout) findViewById(R.id.main)).alpha(0f,1f).duration(1000).start();
                         }
                     }
                     break;
@@ -141,23 +142,15 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        int orientation = getResources().getConfiguration().orientation;
-        int rotation = getWindowManager().getDefaultDisplay().getRotation();
-        if (orientation == 2) {
-            landscape = true;
-            if (rotation < 2) activityInfo = ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE;
-            if (rotation > 1) activityInfo = ActivityInfo.SCREEN_ORIENTATION_REVERSE_LANDSCAPE;
-        } else if (orientation == 1) {
-            landscape = false;
-            if (rotation < 2) activityInfo = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT;
-            if (rotation > 1) activityInfo = ActivityInfo.SCREEN_ORIENTATION_REVERSE_PORTRAIT;
-        }
-        setRequestedOrientation(activityInfo);
         Display display = getWindowManager().getDefaultDisplay();
         Point size = new Point();
         display.getSize(size);
         width = size.x;
-        height = size.y;
+        height = size.y / 6;
+        ResideMenu resideMenu = new ResideMenu(this);
+        resideMenu.attachToActivity(this);
+        resideMenu.getMenuItems(ResideMenu.DIRECTION_LEFT);
+        resideMenu.getMenuItems(ResideMenu.DIRECTION_RIGHT);
         super.onCreate(savedInstanceState);
         if (savedInstanceState == null) {
             mainFragment = MainFragment.newInstance(mHandler);
@@ -166,7 +159,6 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
         }
         setContentView(R.layout.activity_main);
         loadTextViewArray();
-        getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
         startActivityForResult(new Intent(getApplicationContext(), ConnectActivity.class),Constants.ACTIVITY_CONNECT);
     }
 
@@ -178,6 +170,8 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
                     SOCKET_IO_SERVER = data.getStringExtra("URL");
                     SOCKET_IO_SERVER += ":2222";
                     mainFragment.connect();
+                } else {
+                    onDestroy();
                 }
                 break;
         }
@@ -192,7 +186,8 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
 
     @Override
     public void onBackPressed() {
-        onDestroy();
+        mainFragment.disconnect();
+        startActivityForResult(new Intent(getApplicationContext(), ConnectActivity.class),Constants.ACTIVITY_CONNECT);
     }
 
     @Override
@@ -222,6 +217,12 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
     }
 
     private void loadTextViewArray() {
+        lines = new LinearLayout[5];
+        lines[0] = (LinearLayout) findViewById(R.id.line1);
+        lines[1] = (LinearLayout) findViewById(R.id.line2);
+        lines[2] = (LinearLayout) findViewById(R.id.line3);
+        lines[3] = (LinearLayout) findViewById(R.id.line4);
+        lines[4] = (LinearLayout) findViewById(R.id.line5);
         slots = new TextView[50];
         slots[0] = (TextView) findViewById(R.id.tv0);
         slots[1] = (TextView) findViewById(R.id.tv1);
@@ -274,7 +275,13 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
         slots[48] = (TextView) findViewById(R.id.tv48);
         slots[49] = (TextView) findViewById(R.id.tv49);
         tvHp = (TextView) findViewById(R.id.tvHp);
+        tvHp.setHeight(height/2);
         tvMp = (TextView) findViewById(R.id.tvMp);
-        for (int i = 0; i < 50; i++) slots[i].setOnClickListener(this);
+        tvMp.setHeight(height/2);
+        for (int i = 0; i < 50; i++) {
+            slots[i].setOnClickListener(this);
+            slots[i].setMinimumWidth(width/10);
+        }
+        for (int ii = 0; ii < 5; ii++) lines[ii].setMinimumHeight(height);
     }
 }

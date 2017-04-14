@@ -33,11 +33,7 @@ public class MainFragment extends Fragment {
     @Override
     public void onDestroy() {
         super.onDestroy();
-        mSocket.disconnect();
-        mSocket.off("completeItem", onCompleteItem);
-        mSocket.off("stackOnly", onStackOnly);
-        mSocket.off("playerInfo", onPlayerInfo);
-        mSocket.off("disconnected", onPlayerDisconnected);
+        disconnect();
     }
 
     public void connect() {
@@ -51,6 +47,14 @@ public class MainFragment extends Fragment {
         mSocket.on("playerInfo", onPlayerInfo);
         mSocket.on("disconnected", onPlayerDisconnected);
         mSocket.connect();
+    }
+
+    public void disconnect() {
+        mSocket.disconnect();
+        mSocket.off("completeItem", onCompleteItem);
+        mSocket.off("stackOnly", onStackOnly);
+        mSocket.off("playerInfo", onPlayerInfo);
+        mSocket.off("disconnected", onPlayerDisconnected);
     }
 
     public void attemptSend(String type, String message) {

@@ -23,4 +23,5 @@ dependencies {
         exclude group: 'org.json', module: 'json'
     }
     compile 'com.github.florent37:viewanimator:1.0.5'
+    compile 'com.specyci:residemenu:1.6'
 }
